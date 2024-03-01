@@ -2,16 +2,22 @@
 
 using namespace std;
 
-void exibirSolucao(Solution& s) {
-    for (int i = 0; i < s.sequencia.size() - 1; i++) {
+void exibirSolucao(Solution &s)
+{
+    for (int i = 0; i < s.sequencia.size() - 1; i++)
+    {
         cout << s.sequencia[i] << " -> ";
     }
     cout << s.sequencia.back() << endl;
+
+    cout << s.valorObj << endl;
 }
 
-void calcularValorObj(Solution& s, Graph& g) {
+void calcularValorObj(Solution &s, Graph &g)
+{
     s.valorObj = 0;
-    for (int i = 0; i < s.sequencia.size() - 1; i++) {
-        s.valorObj += g.adj[s.sequencia[i]][s.sequencia[i+1]];
+    for (int i = 0; i < s.sequencia.size() - 1; i++)
+    {
+        s.valorObj += g.adj[s.sequencia[i]][s.sequencia[i + 1]];
     }
 }

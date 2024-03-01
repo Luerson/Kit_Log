@@ -3,7 +3,9 @@
 
 #include <bits/stdc++.h>
 #include "solucao.h"
+#include "../src/Data.h"
 
-void perturbacao(vector<long double> &);
+Solution perturbacao(Solution &, Graph &g);
+void selecionarIndices(int &, int &, int &, int &, int &, int &, int);
 
 #endif

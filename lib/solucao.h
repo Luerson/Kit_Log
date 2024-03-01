@@ -1,22 +1,23 @@
 #ifndef SOLUCAO_H
 #define SOLUCAO_H
 
-
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include "../src/Data.h"
 
 using namespace std;
 
-typedef struct {
+typedef struct
+{
     vector<int> sequencia;
     long double valorObj;
-}Solution;
+} Solution;
 
-typedef struct {
+typedef struct
+{
     vector<vector<long double>> adj;
-}Graph;
+} Graph;
 
-void exibirSolucao(Solution&);
-void calcularValorObj(Solution&, Graph&);
-
+void exibirSolucao(Solution &);
+void calcularValorObj(Solution &, Graph &);
 
 #endif

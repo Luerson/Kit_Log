@@ -4,14 +4,15 @@ bool bestImprovementSwap(Solution &s, Graph &g)
 {
     long double bestDelta = 0;
     int best_i, best_j;
+    const int size = s.sequencia.size();
 
-    for (int i = 1; i < s.sequencia.size() - 1; i++)
+    for (int i = 1; i < size - 1; i++)
     {
         int vi = s.sequencia[i];
         int vi_next = s.sequencia[i + 1];
         int vi_prev = s.sequencia[i - 1];
 
-        for (int j = i + 2; j < s.sequencia.size() - 1; j++)
+        for (int j = i + 1; j < size - 1; j++)
         {
             int vj = s.sequencia[j];
             int vj_next = s.sequencia[j + 1];
@@ -21,8 +22,7 @@ bool bestImprovementSwap(Solution &s, Graph &g)
 
             if (j == i + 1)
             {
-                delta = 0 - g.adj[vi_prev][vi] - g.adj[vj][vj_next];
-                delta += g.adj[vi_prev][vj] + g.adj[vi][vj_next];
+                delta = g.adj[vi_prev][vj] + g.adj[vi][vj_next] - g.adj[vi_prev][vi] - g.adj[vj][vj_next];
             }
             else
             {
@@ -55,12 +55,13 @@ bool bestImprovement20pt(Solution &s, Graph &g)
 {
     long double bestDelta = 0;
     int best_j, best_i;
+    const int size = s.sequencia.size();
 
-    for (int i = 1; i < s.sequencia.size() - 1; i++)
+    for (int i = 1; i < size - 1; i++)
     {
         int prev_i = s.sequencia[i - 1];
         int cur_i = s.sequencia[i];
-        for (int j = i + 1; j < s.sequencia.size() - 1; j++)
+        for (int j = i + 1; j < size - 1; j++)
         {
             int cur_j = s.sequencia[j];
             int prox_j = s.sequencia[j + 1];
@@ -94,15 +95,16 @@ bool bestImprovement0r0pt(Solution &s, Graph &g, int len)
 {
     long double bestDelta = 0;
     int best_j, best_i;
+    const int size = s.sequencia.size();
 
-    for (int i = 1; i < s.sequencia.size() - len; i++)
+    for (int i = 1; i < size - len; i++)
     {
         int seq_l = s.sequencia[i];
         int seq_r = s.sequencia[i + len - 1];
         int prev_seq = s.sequencia[i - 1];
         int prox_Seq = s.sequencia[i + len];
 
-        for (int j = 0; j < s.sequencia.size() - 1; j++)
+        for (int j = 0; j < size - 1; j++)
         {
             if (j >= i - 1 && j <= i + len - 1)
                 continue;
@@ -166,7 +168,6 @@ void buscaLocal(Solution &s, Graph &g)
 {
     vector<int> NL = {1, 2, 3, 4, 5};
     bool improved = false;
-    int cont = 10;
 
     while (!NL.empty())
     {
@@ -191,7 +192,7 @@ void buscaLocal(Solution &s, Graph &g)
             break;
         }
 
-        cout << "cost = " << s.valorObj << endl;
+        // cout << "cost = " << s.valorObj << endl;
 
         if (improved)
             NL = {1, 2, 3, 4, 5};
