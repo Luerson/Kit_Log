@@ -3,14 +3,14 @@
 void selecionarIndices(int &start1, int &start2, int &s1, int &s2, int &end1, int &end2, int len)
 {
 
-    s1 = (rand() % (len / 10)) + 1;
-    s2 = (rand() % (len / 10)) + 1;
+    s1 = max((rand() % (len / 10)), 2);
+    s2 = max((rand() % (len / 10)), 2);
 
-    start1 = rand() % (len - s1 - 1) + 1;
+    start1 = rand() % (len - s1);
     end1 = start1 + s1 - 1;
     do
     {
-        start2 = rand() % (len - s2 - 1) + 1;
+        start2 = rand() % (len - s2);
         end2 = start2 + s2 - 1;
     } while (end1 >= start2 && start1 <= end2);
 
@@ -40,7 +40,8 @@ Solution perturbacao(Solution &sequenciaPrev, Graph &g)
     {
         for (int j = 0; j < swaps2; j++)
         {
-            swap(s.sequencia[end2 - j], s.sequencia[end2 - j - 1]);
+
+            iter_swap(s.sequencia.begin() + end2 - j, s.sequencia.begin() + end2 - j - 1);
         }
         start1++;
         end1++;
@@ -50,9 +51,11 @@ Solution perturbacao(Solution &sequenciaPrev, Graph &g)
     {
         for (int j = 0; j < swaps1; j++)
         {
-            swap(s.sequencia[start1 + j], s.sequencia[start1 + j + 1]);
+            iter_swap(s.sequencia.begin() + start1 + j, s.sequencia.begin() + start1 + j + 1);
         }
     }
+
+    s.sequencia.back() = s.sequencia[0];
 
     calcularValorObj(s, g);
 

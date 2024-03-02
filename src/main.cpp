@@ -39,21 +39,6 @@ int main(int argc, char **argv)
 
     cout << fixed << setprecision(3) << "Tempo total: " << totalTime << " segundos" << std::endl;
 
-    // cout << "Dimension: " << n << endl;
-    // cout << "DistanceMatrix: " << endl;
-    //  data.printMatrixDist();
-
-    /*cout << "Exemplo de Solucao s = ";
-    double cost = 0.0;
-    for (size_t i = 1; i < n; i++)
-    {
-        cout << i << " -> ";
-        cost += data.getDistance(i, i + 1);
-    }
-    cost += data.getDistance(n, 1);
-    cout << n << " -> " << 1 << endl;
-    cout << "Custo de S: " << cost << endl;*/
-
     exibirSolucao(s);
 
     return 0;

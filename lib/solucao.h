@@ -9,12 +9,12 @@ using namespace std;
 typedef struct
 {
     vector<int> sequencia;
-    long double valorObj;
+    double valorObj;
 } Solution;
 
 typedef struct
 {
-    vector<vector<long double>> adj;
+    vector<vector<double>> adj;
 } Graph;
 
 void exibirSolucao(Solution &);

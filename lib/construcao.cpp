@@ -60,18 +60,6 @@ void inserirNaSolucao(vector<int> &subtour, int no)
     subtour.push_back(0);
 }
 
-long double calcCost(vector<int> &subtour, Graph &g)
-{
-    long double cost = 0;
-
-    for (int i = 0; i < subtour.size() - 1; i++)
-    {
-        cost += g.adj[subtour[i]][subtour[i + 1]];
-    }
-
-    return cost;
-}
-
 Solution construcao(Graph &g)
 {
     int graph_size = g.adj.size();
@@ -86,18 +74,18 @@ Solution construcao(Graph &g)
 
     while (!CL.empty())
     {
-
         vector<InsertionInfo> custoInsercao = calcularCustoInsercao(s.sequencia, CL, g);
 
         sort(custoInsercao.begin(), custoInsercao.end());
         double alpha = (double)rand() / RAND_MAX;
-        int selecionado = rand() % ((int)ceil(alpha * custoInsercao.size()));
+        int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
 
         inserirNaSolucao(s.sequencia, custoInsercao[selecionado].noInserido);
+
         CL.erase(custoInsercao[selecionado].noInserido);
     }
 
-    s.valorObj = calcCost(s.sequencia, g);
+    calcularValorObj(s, g);
 
     return s;
 }
