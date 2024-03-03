@@ -43,7 +43,7 @@ vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoU
             InsertionInfo candidate;
 
             candidate.noInserido = vertice;
-            candidate.arestaRemovida = make_pair(subtour[i], subtour[i + 1]);
+            candidate.arestaRemovida = make_pair(i, i + 1);
             candidate.custo = g.adj[subtour[i]][vertice] + g.adj[vertice][subtour[i + 1]] - g.adj[subtour[i]][subtour[i + 1]];
 
             candidates.push_back(candidate);
@@ -53,11 +53,9 @@ vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoU
     return candidates;
 }
 
-void inserirNaSolucao(vector<int> &subtour, int no)
+void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no)
 {
-    subtour.pop_back();
-    subtour.push_back(no);
-    subtour.push_back(0);
+    subtour.insert(subtour.begin() + no.arestaRemovida.second, no.noInserido);
 }
 
 Solution construcao(Graph &g)
@@ -80,7 +78,7 @@ Solution construcao(Graph &g)
         double alpha = (double)rand() / RAND_MAX;
         int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
 
-        inserirNaSolucao(s.sequencia, custoInsercao[selecionado].noInserido);
+        inserirNaSolucao(s.sequencia, custoInsercao[selecionado]);
 
         CL.erase(custoInsercao[selecionado].noInserido);
     }

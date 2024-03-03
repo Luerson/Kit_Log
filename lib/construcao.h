@@ -20,7 +20,7 @@ struct InsertionInfo
 
 void escolher3NosAleatorios(vector<int> &, int);
 set<int> nosRestantes(vector<int> &, int);
-void inserirNaSolucao(vector<int> &, int);
+void inserirNaSolucao(vector<int> &, InsertionInfo &);
 vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Graph &);
 Solution construcao(Graph &);
 
