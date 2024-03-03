@@ -22,7 +22,7 @@ void selecionarIndices(int &start1, int &start2, int &s1, int &s2, int &end1, in
     }
 }
 
-Solution perturbacao(Solution &sequenciaPrev, Graph &g)
+Solution perturbacao(Solution &sequenciaPrev, Data &data)
 {
     Solution s = sequenciaPrev;
 
@@ -33,19 +33,32 @@ Solution perturbacao(Solution &sequenciaPrev, Graph &g)
 
     selecionarIndices(start1, start2, s1, s2, end1, end2, len);
 
-    vector<int> subSeq1(s.sequencia.begin() + start1, s.sequencia.begin() + end1 + 1);
-    vector<int> subSeq2(s.sequencia.begin() + start2, s.sequencia.begin() + end2 + 1);
+    int prev_i_1 = s.sequencia[start1 - 1];
+    int prev_i_2 = s.sequencia[start2 - 1];
+    int prox_j_1 = s.sequencia[end1 + 1];
+    int prox_j_2 = s.sequencia[end2 + 1];
+    int seq_l_1 = s.sequencia[start1];
+    int seq_l_2 = s.sequencia[start2];
+    int seq_r_1 = s.sequencia[end1];
+    int seq_r_2 = s.sequencia[end2];
+
+    if (end1 + 1 == start2)
+    {
+        s.valorObj -= data.getDistance(prev_i_1, seq_l_1) + data.getDistance(seq_r_1, seq_l_2) + data.getDistance(seq_r_2, prox_j_2);
+        s.valorObj += data.getDistance(prev_i_1, seq_l_2) + data.getDistance(seq_r_2, seq_l_1) + data.getDistance(seq_r_1, prox_j_2);
+    }
+    else
+    {
+        s.valorObj -= data.getDistance(prev_i_1, seq_l_1) + data.getDistance(seq_r_1, prox_j_1) + data.getDistance(prev_i_2, seq_l_2) + data.getDistance(seq_r_2, prox_j_2);
+        s.valorObj += data.getDistance(prev_i_1, seq_l_2) + data.getDistance(seq_r_2, prox_j_1) + data.getDistance(prev_i_2, seq_l_1) + data.getDistance(seq_r_1, prox_j_2);
+    }
+
+    rotate(s.sequencia.begin() + start1, s.sequencia.begin() + end1 + 1, s.sequencia.begin() + end2 + 1);
 
     start2 -= s1;
     end2 -= s1;
 
-    s.sequencia.erase(s.sequencia.begin() + start1, s.sequencia.begin() + end1 + 1);
-    s.sequencia.erase(s.sequencia.begin() + start2, s.sequencia.begin() + end2 + 1);
-
-    s.sequencia.insert(s.sequencia.begin() + start1, subSeq2.begin(), subSeq2.end());
-    s.sequencia.insert(s.sequencia.begin() + start2 + s2, subSeq1.begin(), subSeq1.end());
-
-    calcularValorObj(s, g);
+    rotate(s.sequencia.begin() + start1, s.sequencia.begin() + start2, s.sequencia.begin() + end2 + 1);
 
     return s;
 }

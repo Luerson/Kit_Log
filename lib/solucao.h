@@ -12,12 +12,7 @@ typedef struct
     long double valorObj;
 } Solution;
 
-typedef struct
-{
-    vector<vector<long double>> adj;
-} Graph;
-
 void exibirSolucao(Solution &);
-void calcularValorObj(Solution &, Graph &);
+void calcularValorObj(Solution &, Data &);
 
 #endif

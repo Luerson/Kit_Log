@@ -1,6 +1,6 @@
 #include "buscaLocal.h"
 
-bool bestImprovementSwap(Solution &s, Graph &g)
+bool bestImprovementSwap(Solution &s, Data &data)
 {
     long double bestDelta = 0;
     int best_i, best_j;
@@ -22,14 +22,14 @@ bool bestImprovementSwap(Solution &s, Graph &g)
 
             if (j == i + 1)
             {
-                delta = g.adj[vi_prev][vj] + g.adj[vi][vj_next] - g.adj[vi_prev][vi] - g.adj[vj][vj_next];
+                delta = data.getDistance(vi_prev, vj) + data.getDistance(vi, vj_next) - data.getDistance(vi_prev, vi) - data.getDistance(vj, vj_next);
             }
             else
             {
-                delta = 0 - g.adj[vi_prev][vi] - g.adj[vi][vi_next];
-                delta = delta - g.adj[vj_prev][vj] - g.adj[vj][vj_next];
-                delta = delta + g.adj[vi_prev][vj] + g.adj[vj][vi_next];
-                delta = delta + g.adj[vj_prev][vi] + g.adj[vi][vj_next];
+                delta = 0 - data.getDistance(vi_prev, vi) - data.getDistance(vi, vi_next);
+                delta = delta - data.getDistance(vj_prev, vj) - data.getDistance(vj, vj_next);
+                delta = delta + data.getDistance(vi_prev, vj) + data.getDistance(vj, vi_next);
+                delta = delta + data.getDistance(vj_prev, vi) + data.getDistance(vi, vj_next);
             }
 
             if (delta < bestDelta)
@@ -52,7 +52,7 @@ bool bestImprovementSwap(Solution &s, Graph &g)
     return false;
 }
 
-bool bestImprovement20pt(Solution &s, Graph &g)
+bool bestImprovement20pt(Solution &s, Data &data)
 {
     long double bestDelta = 0;
     int best_j, best_i;
@@ -68,8 +68,8 @@ bool bestImprovement20pt(Solution &s, Graph &g)
             int cur_j = s.sequencia[j];
             int prox_j = s.sequencia[j + 1];
 
-            long double delta = g.adj[prev_i][cur_j] + g.adj[cur_i][prox_j];
-            delta -= g.adj[prev_i][cur_i] + g.adj[cur_j][prox_j];
+            long double delta = data.getDistance(prev_i, cur_j) + data.getDistance(cur_i, prox_j);
+            delta -= data.getDistance(prev_i, cur_i) + data.getDistance(cur_j, prox_j);
 
             if (delta < bestDelta)
             {
@@ -90,7 +90,7 @@ bool bestImprovement20pt(Solution &s, Graph &g)
     return false;
 }
 
-bool bestImprovement0r0pt(Solution &s, Graph &g, int len)
+bool bestImprovement0r0pt(Solution &s, Data &data, int len)
 {
     long double bestDelta = 0;
     int best_j, best_i;
@@ -103,19 +103,30 @@ bool bestImprovement0r0pt(Solution &s, Graph &g, int len)
         int prev_seq = s.sequencia[i - 1];
         int prox_Seq = s.sequencia[i + len];
 
-        for (int j = 1; j < size; j++)
+        for (int j = 1; j < size - 1; j++)
         {
-            if (j >= i && j <= i + len)
+            if (j == i)
+            {
+                j += len - 1;
                 continue;
+            }
 
             long double delta;
             int spot, spot_next;
 
-            spot = s.sequencia[j - 1];
-            spot_next = s.sequencia[j];
+            if (j < i)
+            {
+                spot = s.sequencia[j - 1];
+                spot_next = s.sequencia[j];
+            }
+            else
+            {
+                spot = s.sequencia[j];
+                spot_next = s.sequencia[j + 1];
+            }
 
-            delta = (-g.adj[prev_seq][seq_l]) - g.adj[seq_r][prox_Seq] - g.adj[spot][spot_next];
-            delta += g.adj[prev_seq][prox_Seq] + g.adj[spot][seq_l] + g.adj[seq_r][spot_next];
+            delta = (-data.getDistance(prev_seq, seq_l)) - data.getDistance(seq_r, prox_Seq) - data.getDistance(spot, spot_next);
+            delta += data.getDistance(prev_seq, prox_Seq) + data.getDistance(spot, seq_l) + data.getDistance(seq_r, spot_next);
 
             if (delta < bestDelta)
             {
@@ -123,17 +134,24 @@ bool bestImprovement0r0pt(Solution &s, Graph &g, int len)
                 best_i = i;
                 best_j = j;
             }
+
+            if (j == i - 1)
+            {
+                j += len;
+            }
         }
     }
 
     if (bestDelta < 0)
     {
-        vector<int> toReplace(s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len);
-        if (best_j > best_i)
-            best_j -= len;
-
-        s.sequencia.erase(s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len);
-        s.sequencia.insert(s.sequencia.begin() + best_j, toReplace.begin(), toReplace.end());
+        if (best_j < best_i)
+        {
+            rotate(s.sequencia.begin() + best_j, s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len);
+        }
+        else
+        {
+            rotate(s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len, s.sequencia.begin() + best_j + 1);
+        }
 
         s.valorObj += bestDelta;
         return true;
@@ -142,7 +160,7 @@ bool bestImprovement0r0pt(Solution &s, Graph &g, int len)
     return false;
 }
 
-void buscaLocal(Solution &s, Graph &g)
+void buscaLocal(Solution &s, Data &data)
 {
     vector<int> NL = {1, 2, 3, 4, 5};
     bool improved = false;
@@ -154,19 +172,19 @@ void buscaLocal(Solution &s, Graph &g)
         switch (NL[n])
         {
         case 1:
-            improved = bestImprovementSwap(s, g);
+            improved = bestImprovementSwap(s, data);
             break;
         case 2:
-            improved = bestImprovement20pt(s, g);
+            improved = bestImprovement20pt(s, data);
             break;
         case 3:
-            improved = bestImprovement0r0pt(s, g, 1);
+            improved = bestImprovement0r0pt(s, data, 1);
             break;
         case 4:
-            improved = bestImprovement0r0pt(s, g, 2);
+            improved = bestImprovement0r0pt(s, data, 2);
             break;
         case 5:
-            improved = bestImprovement0r0pt(s, g, 3);
+            improved = bestImprovement0r0pt(s, data, 3);
             break;
         }
 

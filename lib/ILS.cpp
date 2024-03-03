@@ -1,13 +1,15 @@
 #include "ILS.h"
 
-Solution ILS(int maxIter, int maxIterILS, Graph &g)
+Solution ILS(int maxIter, int maxIterILS, Data &data)
 {
     Solution bestOfAll;
     bestOfAll.valorObj = INFINITY;
 
+    int k = 0;
+
     for (int i = 0; i < maxIter; i++)
     {
-        Solution s = construcao(g);
+        Solution s = construcao(data);
 
         Solution best = s;
 
@@ -15,14 +17,14 @@ Solution ILS(int maxIter, int maxIterILS, Graph &g)
 
         while (iterILS <= maxIterILS)
         {
-            buscaLocal(s, g);
+            buscaLocal(s, data);
             if (s.valorObj < best.valorObj)
             {
                 best = s;
                 iterILS = 0;
             }
 
-            s = perturbacao(best, g);
+            s = perturbacao(best, data);
             iterILS++;
         }
 

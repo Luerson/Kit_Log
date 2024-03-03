@@ -13,11 +13,11 @@ void exibirSolucao(Solution &s)
     cout << s.valorObj << endl;
 }
 
-void calcularValorObj(Solution &s, Graph &g)
+void calcularValorObj(Solution &s, Data &data)
 {
     s.valorObj = 0;
     for (int i = 0; i < s.sequencia.size() - 1; i++)
     {
-        s.valorObj += g.adj[s.sequencia[i]][s.sequencia[i + 1]];
+        s.valorObj += data.getDistance(s.sequencia[i], s.sequencia[i + 1]);
     }
 }

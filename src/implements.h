@@ -2,6 +2,7 @@
 #define IMPLEMENTS_H
 
 #include <bits/stdc++.h>
+#include <chrono>
 #include "../lib/construcao.h"
 #include "../lib/solucao.h"
 #include "../lib/ILS.h"

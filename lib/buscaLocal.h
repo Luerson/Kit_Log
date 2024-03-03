@@ -5,9 +5,9 @@
 #include "solucao.h"
 #include "../src/Data.h"
 
-void buscaLocal(Solution &, Graph &);
-bool bestImprovementSwap(Solution &, Graph &);
-bool bestImprovement20pt(Solution &, Graph &);
-bool bestImprovement0r0pt(Solution &, Graph &, int);
+void buscaLocal(Solution &, Data &);
+bool bestImprovementSwap(Solution &, Data &);
+bool bestImprovement20pt(Solution &, Data &);
+bool bestImprovement0r0pt(Solution &, Data &, int);
 
 #endif

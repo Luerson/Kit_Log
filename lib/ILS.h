@@ -10,6 +10,6 @@
 
 using namespace std;
 
-Solution ILS(int, int, Graph &);
+Solution ILS(int, int, Data &);
 
 #endif
