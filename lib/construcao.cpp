@@ -44,7 +44,7 @@ vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoU
 
             candidate.noInserido = vertice;
             candidate.arestaRemovida = make_pair(subtour[i], subtour[i + 1]);
-            candidate.custo = g.adj[subtour[i]][subtour[i + 1]];
+            candidate.custo = g.adj[subtour[i]][vertice] + g.adj[vertice][subtour[i + 1]] - g.adj[subtour[i]][subtour[i + 1]];
 
             candidates.push_back(candidate);
         }
