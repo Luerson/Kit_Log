@@ -17,45 +17,47 @@ void escolher3NosAleatorios(vector<int> &subtour, int dimension)
     }
 }
 
-vector<int> nosRestantes(vector<int> &subtour, int dimension)
+set<int> nosRestantes(vector<int> &subtour, int dimension)
 {
-    vector<int> CL;
+    set<int> CL;
 
     for (int i = 1; i <= dimension; i++)
     {
         if (find(subtour.begin(), subtour.end(), i) == subtour.end())
         {
-            CL.push_back(i);
+            CL.insert(i);
         }
     }
 
     return CL;
 }
 
-vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, vector<int> &naoUsados, Data &data)
+vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoUsados, Data &data)
 {
-    vector<InsertionInfo> candidates;
+    vector<InsertionInfo> candidates(naoUsados.size() * (subtour.size() - 1));
+    int l = 0;
 
-    for (int i = 0; i < naoUsados.size(); i++)
+    for (auto vertice : naoUsados)
     {
         for (int j = 0; j < subtour.size() - 1; j++)
         {
             InsertionInfo candidate;
 
-            candidate.noInserido = i;
+            candidate.noInserido = vertice;
             candidate.arestaRemovida = make_pair(j, j + 1);
-            candidate.custo = data.getDistance(subtour[j], naoUsados[i]) + data.getDistance(naoUsados[i], subtour[j + 1]) - data.getDistance(subtour[j], subtour[j + 1]);
+            candidate.custo = data.getDistance(subtour[j], vertice) + data.getDistance(vertice, subtour[j + 1]) - data.getDistance(subtour[j], subtour[j + 1]);
 
-            candidates.push_back(candidate);
+            candidates[l] = candidate;
+            l++;
         }
     }
 
     return candidates;
 }
 
-void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no, vector<int> naoUsados)
+void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no)
 {
-    subtour.insert(subtour.begin() + no.arestaRemovida.second, naoUsados[no.noInserido]);
+    subtour.insert(subtour.begin() + no.arestaRemovida.second, no.noInserido);
 }
 
 Solution construcao(Data &data)
@@ -68,7 +70,7 @@ Solution construcao(Data &data)
     escolher3NosAleatorios(s.sequencia, dimension);
     s.sequencia.push_back(1);
 
-    vector<int> CL = nosRestantes(s.sequencia, dimension);
+    set<int> CL = nosRestantes(s.sequencia, dimension);
 
     while (!CL.empty())
     {
@@ -78,9 +80,9 @@ Solution construcao(Data &data)
         double alpha = (double)rand() / RAND_MAX;
         int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
 
-        inserirNaSolucao(s.sequencia, custoInsercao[selecionado], CL);
+        inserirNaSolucao(s.sequencia, custoInsercao[selecionado]);
 
-        CL.erase(CL.begin() + custoInsercao[selecionado].noInserido);
+        CL.erase(custoInsercao[selecionado].noInserido);
     }
 
     calcularValorObj(s, data);

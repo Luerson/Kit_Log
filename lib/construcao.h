@@ -19,9 +19,9 @@ struct InsertionInfo
 };
 
 void escolher3NosAleatorios(vector<int> &, int);
-vector<int> nosRestantes(vector<int> &, int);
+set<int> nosRestantes(vector<int> &, int);
 void inserirNaSolucao(vector<int> &, InsertionInfo &);
-vector<InsertionInfo> calcularCustoInsercao(vector<int> &, vector<int> &, Data &);
+vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Data &);
 Solution construcao(Data &);
 
 #endif
