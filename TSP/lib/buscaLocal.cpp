@@ -2,7 +2,7 @@
 
 bool bestImprovementSwap(Solution &s, Data &data)
 {
-    long double bestDelta = 0;
+    double bestDelta = 0;
     int best_i, best_j;
     const int size = s.sequencia.size();
 
@@ -18,7 +18,7 @@ bool bestImprovementSwap(Solution &s, Data &data)
             int vj_next = s.sequencia[j + 1];
             int vj_prev = s.sequencia[j - 1];
 
-            long double delta;
+            double delta;
 
             if (j == i + 1)
             {
@@ -54,7 +54,7 @@ bool bestImprovementSwap(Solution &s, Data &data)
 
 bool bestImprovement20pt(Solution &s, Data &data)
 {
-    long double bestDelta = 0;
+    double bestDelta = 0;
     int best_j, best_i;
     const int size = s.sequencia.size();
 
@@ -68,7 +68,7 @@ bool bestImprovement20pt(Solution &s, Data &data)
             int cur_j = s.sequencia[j];
             int prox_j = s.sequencia[j + 1];
 
-            long double delta = data.getDistance(prev_i, cur_j) + data.getDistance(cur_i, prox_j);
+            double delta = data.getDistance(prev_i, cur_j) + data.getDistance(cur_i, prox_j);
             delta -= data.getDistance(prev_i, cur_i) + data.getDistance(cur_j, prox_j);
 
             if (delta < bestDelta)
@@ -92,7 +92,7 @@ bool bestImprovement20pt(Solution &s, Data &data)
 
 bool bestImprovement0r0pt(Solution &s, Data &data, int len)
 {
-    long double bestDelta = 0;
+    double bestDelta = 0;
     int best_j, best_i;
     const int size = s.sequencia.size();
 
@@ -103,6 +103,8 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
         int prev_seq = s.sequencia[i - 1];
         int prox_Seq = s.sequencia[i + len];
 
+        double custo_i = (-data.getDistance(prev_seq, seq_l)) - data.getDistance(seq_r, prox_Seq);
+
         for (int j = 1; j < size - 1; j++)
         {
             if (j == i)
@@ -111,7 +113,7 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
                 continue;
             }
 
-            long double delta;
+            double delta;
             int spot, spot_next;
 
             if (j < i)
@@ -125,7 +127,7 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
                 spot_next = s.sequencia[j + 1];
             }
 
-            delta = (-data.getDistance(prev_seq, seq_l)) - data.getDistance(seq_r, prox_Seq) - data.getDistance(spot, spot_next);
+            delta = custo_i - data.getDistance(spot, spot_next);
             delta += data.getDistance(prev_seq, prox_Seq) + data.getDistance(spot, seq_l) + data.getDistance(seq_r, spot_next);
 
             if (delta < bestDelta)

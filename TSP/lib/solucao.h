@@ -9,7 +9,7 @@ using namespace std;
 typedef struct
 {
     vector<int> sequencia;
-    long double valorObj;
+    double valorObj;
 } Solution;
 
 void exibirSolucao(Solution &);

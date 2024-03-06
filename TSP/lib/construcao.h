@@ -10,7 +10,7 @@ struct InsertionInfo
 {
     int noInserido;
     pair<int, int> arestaRemovida;
-    long double custo;
+    double custo;
 
     bool operator<(InsertionInfo other) const
     {
