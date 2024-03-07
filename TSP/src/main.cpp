@@ -40,13 +40,10 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
         outputFile.open("resultados.tex", std::ios_base::app);
     }
 
-    string destaqueTempo = (tempoEsp >= midTime) ? "\\textbf{" : "";
-    string destaqueCusto = (custoEsp >= midSolution) ? "\\textbf{" : "";
-
     string nomeInstancia = str;
     nomeInstancia = nomeInstancia.substr(nomeInstancia.find_last_of("/") + 1);
 
-    outputFile << nomeInstancia << " & " << fixed << setprecision(3) << tempoEsp << " & " << destaqueTempo << fixed << setprecision(3) << midTime << " & " << fixed << setprecision(3) << custoEsp << " & " << destaqueCusto << fixed << setprecision(3) << midSolution << " \\\\" << endl;
+    outputFile << nomeInstancia << " & " << fixed << setprecision(3) << tempoEsp << " & " << fixed << setprecision(3) << midTime << " & " << fixed << setprecision(3) << custoEsp << " & " << fixed << setprecision(3) << midSolution << " \\\\" << endl;
 
     outputFile.close();
 }
@@ -60,7 +57,7 @@ int main(int argc, char **argv)
 
     if (arquivo.is_open())
     {
-        std::string linha;
+        string linha;
         while (getline(arquivo, linha))
         {
             char *linha_char = new char[linha.length() + 1];
