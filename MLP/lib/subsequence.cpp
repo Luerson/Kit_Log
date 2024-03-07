@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void updateAllSubseq(Solution &s, vector<vector<Subsequence>> &subseq_matrix)
+void updateAllSubseq(Solution &s, vector<vector<Subsequence>> &subseq_matrix, Data &data)
 {
     int n = s.sequencia.size();
 
@@ -20,7 +20,7 @@ void updateAllSubseq(Solution &s, vector<vector<Subsequence>> &subseq_matrix)
     {
         for (int j = i + 1; j < n; j++)
         {
-            subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j - 1], subseq_matrix[j][j]);
+            subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j - 1], subseq_matrix[j][j], data);
         }
     }
 
@@ -28,7 +28,7 @@ void updateAllSubseq(Solution &s, vector<vector<Subsequence>> &subseq_matrix)
     {
         for (int j = i - 1; j < n; j--)
         {
-            subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j + 1], subseq_matrix[j][j]);
+            subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j + 1], subseq_matrix[j][j], data);
         }
     }
 }
