@@ -15,23 +15,23 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
 
         int iterILS = 0;
 
-        /*while (iterILS <= maxIterILS)
+        while (iterILS <= maxIterILS)
         {
             buscaLocal(s, data);
-            if (s.valorObj < best.valorObj)
+            if (s.latTotal < best.latTotal)
             {
                 best = s;
                 iterILS = 0;
             }
 
-            s = perturbacao(best, data);
+            // s = perturbacao(best, data);
             iterILS++;
         }
 
-        if (best.valorObj < bestOfAll.valorObj)
+        if (best.latTotal < bestOfAll.latTotal)
         {
             bestOfAll = best;
-        }*/
+        }
     }
 
     return bestOfAll;

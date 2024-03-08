@@ -4,7 +4,9 @@ bool bestImprovementSwap(Solution &s, Data &data)
 {
     double bestDelta = 0;
     int best_i, best_j;
+
     const int size = s.sequencia.size();
+    double totalLat = s.matriz_Seq[0][size - 1].C;
 
     for (int i = 1; i < size - 1; i++)
     {
@@ -18,19 +20,18 @@ bool bestImprovementSwap(Solution &s, Data &data)
             int vj_next = s.sequencia[j + 1];
             int vj_prev = s.sequencia[j - 1];
 
+            Subsequence newSubseq = Subsequence::Concatenate(s.matriz_Seq[0][i - 1], s.matriz_Seq[j][j], data);
             double delta;
 
-            if (j == i + 1)
+            if (j != i + 1)
             {
-                delta = data.getDistance(vi_prev, vj) + data.getDistance(vi, vj_next) - data.getDistance(vi_prev, vi) - data.getDistance(vj, vj_next);
+                newSubseq = Subsequence::Concatenate(newSubseq, s.matriz_Seq[i + 1][j - 1], data);
             }
-            else
-            {
-                delta = 0 - data.getDistance(vi_prev, vi) - data.getDistance(vi, vi_next);
-                delta = delta - data.getDistance(vj_prev, vj) - data.getDistance(vj, vj_next);
-                delta = delta + data.getDistance(vi_prev, vj) + data.getDistance(vj, vi_next);
-                delta = delta + data.getDistance(vj_prev, vi) + data.getDistance(vi, vj_next);
-            }
+            newSubseq = Subsequence::Concatenate(newSubseq, s.matriz_Seq[i][i], data);
+            newSubseq = Subsequence::Concatenate(newSubseq, s.matriz_Seq[j + 1][size - 1], data);
+
+            delta = newSubseq.C - totalLat;
+            // cout << delta << endl;
 
             if (delta < bestDelta)
             {
@@ -45,7 +46,7 @@ bool bestImprovementSwap(Solution &s, Data &data)
     {
         swap(s.sequencia[best_i], s.sequencia[best_j]);
 
-        s.valorObj += bestDelta;
+        updateAllSubseq(s, data);
 
         return true;
     }
@@ -56,7 +57,9 @@ bool bestImprovement20pt(Solution &s, Data &data)
 {
     double bestDelta = 0;
     int best_j, best_i;
+
     const int size = s.sequencia.size();
+    double totalLat = s.matriz_Seq[0][size - 1].C;
 
     for (int i = 1; i < size - 1; i++)
     {
@@ -68,8 +71,12 @@ bool bestImprovement20pt(Solution &s, Data &data)
             int cur_j = s.sequencia[j];
             int prox_j = s.sequencia[j + 1];
 
-            double delta = data.getDistance(prev_i, cur_j) + data.getDistance(cur_i, prox_j);
-            delta -= data.getDistance(prev_i, cur_i) + data.getDistance(cur_j, prox_j);
+            Subsequence newSubSeq;
+            double delta;
+
+            newSubSeq = Subsequence::Concatenate(s.matriz_Seq[0][i - 1], s.matriz_Seq[j][i], data);
+            newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[j + 1][size - 1], data);
+            delta = newSubSeq.C - totalLat;
 
             if (delta < bestDelta)
             {
@@ -83,7 +90,7 @@ bool bestImprovement20pt(Solution &s, Data &data)
     if (bestDelta < 0)
     {
         reverse(s.sequencia.begin() + best_i, s.sequencia.begin() + best_j + 1);
-        s.valorObj += bestDelta;
+        updateAllSubseq(s, data);
         return true;
     }
 
@@ -94,7 +101,9 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
 {
     double bestDelta = 0;
     int best_j, best_i;
+
     const int size = s.sequencia.size();
+    double totalLat = s.matriz_Seq[0][size - 1].C;
 
     for (int i = 1; i < size - len; i++)
     {
@@ -102,8 +111,6 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
         int seq_r = s.sequencia[i + len - 1];
         int prev_seq = s.sequencia[i - 1];
         int prox_Seq = s.sequencia[i + len];
-
-        double custo_i = (-data.getDistance(prev_seq, seq_l)) - data.getDistance(seq_r, prox_Seq);
 
         for (int j = 1; j < size - 1; j++)
         {
@@ -113,22 +120,23 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
                 continue;
             }
 
+            Subsequence newSubSeq;
             double delta;
-            int spot, spot_next;
 
             if (j < i)
             {
-                spot = s.sequencia[j - 1];
-                spot_next = s.sequencia[j];
+                newSubSeq = Subsequence::Concatenate(s.matriz_Seq[0][j - 1], s.matriz_Seq[i][i + len - 1], data);
+                newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[j][i - 1], data);
+                newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[i + len][size - 1], data);
             }
             else
             {
-                spot = s.sequencia[j];
-                spot_next = s.sequencia[j + 1];
+                newSubSeq = Subsequence::Concatenate(s.matriz_Seq[0][i - 1], s.matriz_Seq[i + len][j], data);
+                newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[i][i + len - 1], data);
+                newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[j + 1][size - 1], data);
             }
 
-            delta = custo_i - data.getDistance(spot, spot_next);
-            delta += data.getDistance(prev_seq, prox_Seq) + data.getDistance(spot, seq_l) + data.getDistance(seq_r, spot_next);
+            delta = newSubSeq.C;
 
             if (delta < bestDelta)
             {
@@ -155,7 +163,7 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
             rotate(s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len, s.sequencia.begin() + best_j + 1);
         }
 
-        s.valorObj += bestDelta;
+        updateAllSubseq(s, data);
         return true;
     }
 

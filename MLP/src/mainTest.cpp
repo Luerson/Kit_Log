@@ -17,5 +17,10 @@ int main(int argc, char **argv)
 
     s = ILS(10, min(100, (int)n), data);
 
+    cout << endl;
+    cout << "chegou aqui" << endl;
+
+    exibirSolucao(s);
+
     return 0;
 }

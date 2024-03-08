@@ -59,7 +59,5 @@ Solution construcao(Data &data)
 
     updateAllSubseq(s, data);
 
-    exibirSolucao(s);
-
     return s;
 }
