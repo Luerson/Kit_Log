@@ -8,20 +8,17 @@ using namespace std;
 
 struct InsertionInfo
 {
-    int noInserido;
-    pair<int, int> arestaRemovida;
-    double custo;
+    int no;
+    double distance_to_r;
 
     bool operator<(InsertionInfo other) const
     {
-        return custo < other.custo;
+        return distance_to_r < other.distance_to_r;
     }
 };
 
-void escolher3NosAleatorios(vector<int> &, int);
 set<int> nosRestantes(vector<int> &, int);
-void inserirNaSolucao(vector<int> &, InsertionInfo &);
-vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Data &);
+vector<InsertionInfo> calcularDistancia(vector<int> &, set<int> &, Data &);
 Solution construcao(Data &);
 
 #endif

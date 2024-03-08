@@ -3,7 +3,7 @@
 Solution ILS(int maxIter, int maxIterILS, Data &data)
 {
     Solution bestOfAll;
-    bestOfAll.valorObj = INFINITY;
+    bestOfAll.latTotal = INFINITY;
 
     int k = 0;
 
@@ -15,7 +15,7 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
 
         int iterILS = 0;
 
-        while (iterILS <= maxIterILS)
+        /*while (iterILS <= maxIterILS)
         {
             buscaLocal(s, data);
             if (s.valorObj < best.valorObj)
@@ -31,7 +31,7 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
         if (best.valorObj < bestOfAll.valorObj)
         {
             bestOfAll = best;
-        }
+        }*/
     }
 
     return bestOfAll;

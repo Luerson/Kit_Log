@@ -23,7 +23,7 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
     {
         auto start = chrono::steady_clock::now();
 
-        s = ILS(50, (n >= 150 ? n / 2 : n), data);
+        s = ILS(10, min((size_t)100, n), data);
 
         auto end = chrono::steady_clock::now();
         chrono::duration<double> elapsedTime = end - start;
