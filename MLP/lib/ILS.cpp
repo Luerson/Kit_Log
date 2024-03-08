@@ -24,7 +24,7 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
                 iterILS = 0;
             }
 
-            // s = perturbacao(best, data);
+            s = perturbacao(best, data);
             iterILS++;
         }
 
