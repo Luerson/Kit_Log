@@ -7,7 +7,9 @@ Solution ILS(int Imax, int Iils, Data &data)
 
     for (int i = 0; i < Imax; i++)
     {
-        Solution s = construcao(data);
+
+        double alpha = ((double)(rand() % 26)) / 100.0;
+        Solution s = construcao(data, alpha);
 
         Solution best = s;
 

@@ -19,6 +19,6 @@ struct InsertionInfo
 
 set<int> nosRestantes(vector<int> &, int);
 vector<InsertionInfo> calcularDistancia(vector<int> &, set<int> &, Data &);
-Solution construcao(Data &);
+Solution construcao(Data &, double data);
 
 #endif

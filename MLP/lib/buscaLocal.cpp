@@ -116,7 +116,7 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
                 newSubSeq = Subsequence::Concatenate(newSubSeq, s.matriz_Seq[j + 1][size - 1], data);
             }
 
-            delta = newSubSeq.C;
+            delta = newSubSeq.C - totalLat;
 
             if (delta < bestDelta)
             {

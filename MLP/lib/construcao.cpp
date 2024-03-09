@@ -32,7 +32,7 @@ vector<InsertionInfo> calcularDistancia(vector<int> &subtour, set<int> &naoUsado
     return candidates;
 }
 
-Solution construcao(Data &data)
+Solution construcao(Data &data, double alpha)
 {
     int dimension = data.getDimension();
 
@@ -47,7 +47,6 @@ Solution construcao(Data &data)
         vector<InsertionInfo> custoInsercao = calcularDistancia(s.sequencia, CL, data);
 
         sort(custoInsercao.begin(), custoInsercao.end());
-        double alpha = ((double)(rand() % 26)) / 100.0;
         int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
 
         s.sequencia.push_back(custoInsercao[selecionado].no);
