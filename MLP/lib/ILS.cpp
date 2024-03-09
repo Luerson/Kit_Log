@@ -1,11 +1,11 @@
 #include "ILS.h"
 
-Solution ILS(int maxIter, int maxIterILS, Data &data)
+Solution ILS(int Imax, int Iils, Data &data)
 {
     Solution bestOfAll;
     bestOfAll.latTotal = INFINITY;
 
-    for (int i = 0; i < maxIter; i++)
+    for (int i = 0; i < Imax; i++)
     {
         Solution s = construcao(data);
 
@@ -13,7 +13,7 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
 
         int iterILS = 0;
 
-        while (iterILS <= maxIterILS)
+        while (iterILS <= Iils)
         {
             buscaLocal(s, data);
             if (s.latTotal < best.latTotal)

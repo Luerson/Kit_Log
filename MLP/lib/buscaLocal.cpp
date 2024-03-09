@@ -10,16 +10,8 @@ bool bestImprovementSwap(Solution &s, Data &data)
 
     for (int i = 1; i < size - 1; i++)
     {
-        int vi = s.sequencia[i];
-        int vi_next = s.sequencia[i + 1];
-        int vi_prev = s.sequencia[i - 1];
-
         for (int j = i + 1; j < size - 1; j++)
         {
-            int vj = s.sequencia[j];
-            int vj_next = s.sequencia[j + 1];
-            int vj_prev = s.sequencia[j - 1];
-
             Subsequence newSubseq = Subsequence::Concatenate(s.matriz_Seq[0][i - 1], s.matriz_Seq[j][j], data);
             double delta;
 
@@ -31,7 +23,6 @@ bool bestImprovementSwap(Solution &s, Data &data)
             newSubseq = Subsequence::Concatenate(newSubseq, s.matriz_Seq[j + 1][size - 1], data);
 
             delta = newSubseq.C - totalLat;
-            // cout << delta << endl;
 
             if (delta < bestDelta)
             {
@@ -63,14 +54,8 @@ bool bestImprovement20pt(Solution &s, Data &data)
 
     for (int i = 1; i < size - 1; i++)
     {
-        int prev_i = s.sequencia[i - 1];
-        int cur_i = s.sequencia[i];
-
         for (int j = i + 1; j < size - 1; j++)
         {
-            int cur_j = s.sequencia[j];
-            int prox_j = s.sequencia[j + 1];
-
             Subsequence newSubSeq;
             double delta;
 
@@ -107,11 +92,6 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
 
     for (int i = 1; i < size - len; i++)
     {
-        int seq_l = s.sequencia[i];
-        int seq_r = s.sequencia[i + len - 1];
-        int prev_seq = s.sequencia[i - 1];
-        int prox_Seq = s.sequencia[i + len];
-
         for (int j = 1; j < size - 1; j++)
         {
             if (j == i)

@@ -53,6 +53,6 @@ void updateAllSubseq(Solution &s, Data &data, int altI, int altJ)
         }
     }
 
-    s.latTotal = s.matriz_Seq[0][s.sequencia.size() - 1].C;
-    s.custoTotal = s.matriz_Seq[0][s.sequencia.size() - 1].T;
+    s.latTotal = s.matriz_Seq[0][n - 1].C;
+    s.custoTotal = s.matriz_Seq[0][n - 1].T;
 }

@@ -44,8 +44,11 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
     nomeInstancia = nomeInstancia.substr(nomeInstancia.find_last_of("/") + 1);
     nomeInstancia.substr(0, nomeInstancia.size() - 4);
 
-    double per_temp = ((tempoEsp - midTime) / tempoEsp) * 100;
-    double per_custo = ((custoEsp - midSolution) / custoEsp) * 100;
+    double per_temp = ((tempoEsp - midTime) / tempoEsp) * 100.0;
+    double per_custo = ((custoEsp - midSolution) / custoEsp) * 100.0;
+
+    cout << nomeInstancia << endl;
+    exibirSolucao(s);
 
     outputFile << nomeInstancia << " & ";
     outputFile << fixed << setprecision(1) << per_temp << " & ";
