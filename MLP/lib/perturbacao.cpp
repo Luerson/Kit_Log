@@ -40,7 +40,7 @@ Solution perturbacao(Solution &sequenciaPrev, Data &data)
 
     std::rotate(s.sequencia.begin() + start1, s.sequencia.begin() + start2, s.sequencia.begin() + end2 + 1);
 
-    updateAllSubseq(s, data);
+    updateAllSubseq(s, data, start1, end2 + s1);
 
     return s;
 }

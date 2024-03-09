@@ -5,8 +5,6 @@ Solution ILS(int maxIter, int maxIterILS, Data &data)
     Solution bestOfAll;
     bestOfAll.latTotal = INFINITY;
 
-    int k = 0;
-
     for (int i = 0; i < maxIter; i++)
     {
         Solution s = construcao(data);

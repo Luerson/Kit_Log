@@ -23,13 +23,13 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
     {
         auto start = chrono::steady_clock::now();
 
-        s = ILS(10, min((size_t)100, n), data);
+        s = ILS(10, min(100, (int)n), data);
 
         auto end = chrono::steady_clock::now();
         chrono::duration<double> elapsedTime = end - start;
 
         totalTime += elapsedTime.count();
-        totalSolution += s.valorObj;
+        totalSolution += s.latTotal;
     }
 
     midTime = totalTime / 10.0;
@@ -40,13 +40,20 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
         outputFile.open("resultados.tex", ios_base::app);
     }
 
-    string destaqueTempo = (tempoEsp >= midTime) ? "\\textbf{" : "";
-    string destaqueCusto = (custoEsp >= midSolution) ? "\\textbf{" : "";
-
     string nomeInstancia = str;
     nomeInstancia = nomeInstancia.substr(nomeInstancia.find_last_of("/") + 1);
+    nomeInstancia.substr(0, nomeInstancia.size() - 4);
 
-    outputFile << nomeInstancia << " & " << fixed << setprecision(3) << tempoEsp << " & " << destaqueTempo << fixed << setprecision(3) << midTime << " & " << fixed << setprecision(3) << custoEsp << " & " << destaqueCusto << fixed << setprecision(3) << midSolution << " \\\\" << endl;
+    double per_temp = ((tempoEsp - midTime) / tempoEsp) * 100;
+    double per_custo = ((custoEsp - midSolution) / custoEsp) * 100;
+
+    outputFile << nomeInstancia << " & ";
+    outputFile << fixed << setprecision(1) << per_temp << " & ";
+    outputFile << fixed << setprecision(3) << per_custo << " & ";
+    outputFile << fixed << setprecision(3) << tempoEsp << " & ";
+    outputFile << fixed << setprecision(1) << custoEsp << " & ";
+    outputFile << fixed << setprecision(3) << midTime << " & ";
+    outputFile << fixed << setprecision(1) << midSolution << " \\\\" << endl;
 
     outputFile.close();
 }

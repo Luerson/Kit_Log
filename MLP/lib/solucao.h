@@ -35,6 +35,6 @@ typedef struct
 
 void exibirSolucao(Solution &);
 void calcularValorObj(Solution &, Data &);
-void updateAllSubseq(Solution &, Data &);
+void updateAllSubseq(Solution &, Data &, int, int);
 
 #endif

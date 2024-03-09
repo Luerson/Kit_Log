@@ -46,7 +46,7 @@ bool bestImprovementSwap(Solution &s, Data &data)
     {
         swap(s.sequencia[best_i], s.sequencia[best_j]);
 
-        updateAllSubseq(s, data);
+        updateAllSubseq(s, data, best_i, best_j);
 
         return true;
     }
@@ -90,7 +90,7 @@ bool bestImprovement20pt(Solution &s, Data &data)
     if (bestDelta < 0)
     {
         reverse(s.sequencia.begin() + best_i, s.sequencia.begin() + best_j + 1);
-        updateAllSubseq(s, data);
+        updateAllSubseq(s, data, best_i, best_j);
         return true;
     }
 
@@ -163,7 +163,7 @@ bool bestImprovement0r0pt(Solution &s, Data &data, int len)
             rotate(s.sequencia.begin() + best_i, s.sequencia.begin() + best_i + len, s.sequencia.begin() + best_j + 1);
         }
 
-        updateAllSubseq(s, data);
+        updateAllSubseq(s, data, (best_j < best_i ? best_j : best_i), (best_j < best_i ? best_i + len - 1 : best_j));
         return true;
     }
 

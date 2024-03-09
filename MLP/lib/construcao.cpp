@@ -57,7 +57,7 @@ Solution construcao(Data &data)
 
     s.sequencia.push_back(1);
 
-    updateAllSubseq(s, data);
+    updateAllSubseq(s, data, 0, dimension);
 
     return s;
 }
