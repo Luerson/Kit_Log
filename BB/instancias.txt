@@ -1,0 +1,9 @@
+instances/burma14.tsp
+instances/bayg29.tsp
+instances/bays29.tsp
+instances/fri26.tsp
+instances/gr17.tsp
+instances/gr21.tsp
+instances/gr24.tsp
+instances/ulysses16.tsp
+instances/ulysses22.tsp

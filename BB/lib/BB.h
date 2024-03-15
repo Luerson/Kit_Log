@@ -10,6 +10,7 @@ struct Node
 {
     vector<pair<int, int>> forbidden_arcs;
     vector<vector<int>> subtours;
+    int **assignment;
 
     double lower_bound;
     int chosen;
@@ -17,13 +18,13 @@ struct Node
 
     bool operator<(Node other) const
     {
-        return lower_bound < other.lower_bound;
+        return lower_bound > other.lower_bound;
     }
 };
 
-Solution BB(double **, int);
-Node branchingStrategy(int);
-void solveHungarian(Node &, double **);
-vector<vector<int>> getSubtourHung(Node &, int &);
+Solution BB(double **, int, int);
+Node branchingStrategy(list<Node> &, priority_queue<Node> &, int);
+void solveHungarian(Node &, double **, int dimension);
+void getAtributes(hungarian_problem_t &, Node &, int);
 
-#endif BB_H
+#endif

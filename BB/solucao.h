@@ -5,10 +5,10 @@
 
 using namespace std;
 
-typedef struct Solution
+struct Solution
 {
     vector<int> sequencia;
     double odj_value;
 };
 
-#endif SOLUCAO_H
+#endif

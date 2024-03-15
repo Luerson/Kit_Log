@@ -7,4 +7,4 @@
 
 using namespace std;
 
-#endif IMPLEMENTS_H
+#endif

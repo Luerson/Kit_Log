@@ -23,19 +23,28 @@ int main(int argc, char **argv)
 		}
 	}
 
-	s = BB(cost, data.getDimension());
+	while (1)
+	{
+		int strategy;
+		cout << "1 - DFS" << endl;
+		cout << "2 - BFS" << endl;
+		cout << "3 - LB" << endl;
+		cout << "0 - encerrar" << endl;
 
-	hungarian_problem_t p;
-	int mode = HUNGARIAN_MODE_MINIMIZE_COST;
-	hungarian_init(&p, cost, data.getDimension(), data.getDimension(), mode); // Carregando o problema
+		cin >> strategy;
 
-	double obj_value = hungarian_solve(&p);
-	cout << "Obj. value: " << obj_value << endl;
+		if (strategy == 0)
+		{
+			break;
+		}
+		if (strategy < 0 && strategy > 3)
+		{
+			cout << "estrateia invalida" << endl;
+		}
+		s = BB(cost, data.getDimension(), strategy);
+		cout << s.odj_value << endl;
+	}
 
-	cout << "Assignment" << endl;
-	hungarian_print_assignment(&p);
-
-	hungarian_free(&p);
 	for (int i = 0; i < data.getDimension(); i++)
 		delete[] cost[i];
 	delete[] cost;
