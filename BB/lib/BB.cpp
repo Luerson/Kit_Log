@@ -2,6 +2,7 @@
 
 void solveHungarian(Node &root, double **cost, int dimension)
 {
+    // Primeiro é necessário proibir em 'cost' os arcos presentes em 'forbidden_arcs'
     vector<double> forbidden_values;
     for (int i = 0; i < root.forbidden_arcs.size(); i++)
     {
@@ -14,12 +15,14 @@ void solveHungarian(Node &root, double **cost, int dimension)
 
     hungarian_problem_t p;
     int mode = HUNGARIAN_MODE_MINIMIZE_COST;
-    hungarian_init(&p, cost, dimension, dimension, mode); // Carregando o problema
+    hungarian_init(&p, cost, dimension, dimension, mode);
 
     getAtributes(p, root, dimension);
 
     hungarian_free(&p);
 
+    // Agora devo retornar todos os valores alterados de
+    // 'cost' para seu valor original
     for (int i = 0; i < root.forbidden_arcs.size(); i++)
     {
         int forbidden_i = root.forbidden_arcs[i].first;
@@ -52,6 +55,8 @@ Node branchingStrategy(list<Node> &tree, priority_queue<Node> &LB, int strategy)
     return newNode;
 }
 
+// Utiliza a váriavel p para preencher todos os atributos
+// da variável node
 void getAtributes(hungarian_problem_t &p, Node &node, int dimension)
 {
     vector<vector<int>> resp;
@@ -94,7 +99,6 @@ void getAtributes(hungarian_problem_t &p, Node &node, int dimension)
     node.feasible = (resp.size() == 1);
     node.chosen = 0;
 
-    // Escolher melhor subtour
     for (int i = 1; i < resp.size(); i++)
     {
         if (resp[i].size() < resp[node.chosen].size() && resp[i].size() > 1)
@@ -127,35 +131,29 @@ Solution BB(double **cost, int dimension, int strategy)
         LB.push(root);
     }
 
-    double upper_bound = numeric_limits<double>::infinity();
+    double upper_bound = INFINITE;
 
     while (!tree.empty() || !LB.empty())
     {
+        // cout << tree.size() << endl;
         auto node = branchingStrategy(tree, LB, strategy);
         solveHungarian(node, cost, dimension);
         vector<vector<int>> subtour = node.subtours;
 
-        // cout << node.feasible << endl;
-        // cout << node.lower_bound << endl;
-
-        if (node.feasible && upper_bound > node.lower_bound)
+        if (node.feasible && upper_bound >= node.lower_bound)
         {
             upper_bound = min(node.lower_bound, upper_bound);
             s.sequencia = subtour[0];
             s.odj_value = upper_bound;
 
-            // cout << s.odj_value << endl;
+            cout << s.odj_value << endl;
         }
         else if (upper_bound > node.lower_bound)
         {
-            // cout << "chegou aqui" << endl;
-            // cout << node.subtours[0].size() << endl;
             for (int i = 0; i < node.subtours[node.chosen].size() - 1; i++)
             {
                 Node n;
                 n.forbidden_arcs = node.forbidden_arcs;
-
-                // cout << n.forbidden_arcs.size() << endl;
 
                 pair<int, int>
                     forbidden_arc = {

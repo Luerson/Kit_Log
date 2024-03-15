@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 using namespace std;
 
 #include "data.h"
@@ -35,7 +35,7 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
 
     for (int i = 1; i <= 3; i++)
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 4; j++)
         {
             auto start = chrono::steady_clock::now();
             s = BB(cost, n, i);
@@ -45,13 +45,13 @@ void processarLinha(char *str, double tempoEsp, double custoEsp, ofstream &outpu
 
             totalTimeDFS += (i == 1 ? elapsedTime.count() : 0);
             totalTimeBFS += (i == 2 ? elapsedTime.count() : 0);
-            totalTimeLB += (i == 1 ? elapsedTime.count() : 0);
+            totalTimeLB += (i == 3 ? elapsedTime.count() : 0);
         }
     }
 
-    midTimeDFS = totalTimeDFS / 10.0;
-    midTimeBFS = totalTimeBFS / 10.0;
-    midTimeLB = totalTimeLB / 10.0;
+    midTimeDFS = totalTimeDFS / 4.0;
+    midTimeBFS = totalTimeBFS / 4.0;
+    midTimeLB = totalTimeLB / 4.0;
 
     if (!outputFile.is_open())
     {
@@ -99,4 +99,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-}
+}*/
