@@ -131,11 +131,10 @@ Solution BB(double **cost, int dimension, int strategy)
         LB.push(root);
     }
 
-    double upper_bound = INFINITE;
+    double upper_bound = numeric_limits<double>::infinity();
 
     while (!tree.empty() || !LB.empty())
     {
-        // cout << tree.size() << endl;
         auto node = branchingStrategy(tree, LB, strategy);
         solveHungarian(node, cost, dimension);
         vector<vector<int>> subtour = node.subtours;
@@ -145,8 +144,6 @@ Solution BB(double **cost, int dimension, int strategy)
             upper_bound = min(node.lower_bound, upper_bound);
             s.sequencia = subtour[0];
             s.odj_value = upper_bound;
-
-            cout << s.odj_value << endl;
         }
         else if (upper_bound > node.lower_bound)
         {
@@ -161,8 +158,6 @@ Solution BB(double **cost, int dimension, int strategy)
                         node.subtours[node.chosen][i + 1]};
 
                 n.forbidden_arcs.push_back(forbidden_arc);
-
-                // cout << n.forbidden_arcs.size() << endl;
 
                 n.lower_bound = node.lower_bound;
 

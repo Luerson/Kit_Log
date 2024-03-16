@@ -1,4 +1,4 @@
-/*#include <iostream>
+#include <iostream>
 using namespace std;
 
 #include "data.h"
@@ -99,4 +99,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-}*/
+}
