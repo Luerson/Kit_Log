@@ -4,8 +4,6 @@
 #include <bits/stdc++.h>
 #include "solucao.h"
 #include "construcao.h"
-#include "buscaLocal.h"
-#include "perturbacao.h"
 #include "instance.h"
 
 using namespace std;

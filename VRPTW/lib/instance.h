@@ -20,6 +20,7 @@ typedef struct
     vector<vector<double>> dists;
     int totalVehicles;
     int capacity;
+    int size;
 } Instance;
 
 #endif

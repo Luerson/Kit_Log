@@ -3,6 +3,7 @@
 
 #include <bits/stdc++.h>
 #include "solucao.h"
+#include "instance.h"
 
 using namespace std;
 
@@ -18,10 +19,24 @@ struct InsertionInfo
     }
 };
 
-void escolher3NosAleatorios(vector<int> &, int);
-set<int> nosRestantes(vector<int> &, int);
-void inserirNaSolucao(vector<int> &, InsertionInfo &);
-vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Data &);
-Solution construcao(Data &);
+enum INSERTION_CRITERIA
+{
+    CHEAPEST_INS,
+    NEAREST_NEIGH
+};
+
+enum INSERTION_STRATEGY
+{
+    SEQUENTIAL,
+    PARALLEL
+};
+
+// void escolher3NosAleatorios(vector<int> &, int);
+// set<int> nosRestantes(vector<int> &, int);
+// void inserirNaSolucao(vector<int> &, InsertionInfo &);
+// vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Data &);
+void preencherVazios(Instance &, vector<vector<int>> &, vector<int> &);
+vector<int> iniciaCL(int);
+Solution construcao(Instance &);
 
 #endif

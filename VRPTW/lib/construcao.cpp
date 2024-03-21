@@ -1,38 +1,42 @@
 #include "construcao.h"
 
-void escolher3NosAleatorios(vector<int> &subtour, int dimension)
+void preencherVazios(Instance &instancia, vector<vector<int>> &routes, vector<int> &CL)
 {
-    for (int i = 0; i < 3; i++)
-    {
-        int newVertex = rand() % dimension + 1;
+    int size = instancia.totalVehicles;
 
-        if (find(subtour.begin(), subtour.end(), newVertex) == subtour.end())
+    for (int i = 0; i < size; i++)
+    {
+        while (1)
         {
-            subtour.push_back(newVertex);
-        }
-        else
-        {
-            i--;
+            int newIndex = rand() % CL.size();
+
+            if (instancia.nodes[CL[newIndex]].demand <= instancia.capacity)
+            {
+                cout << CL[newIndex] << endl;
+                routes[i].push_back(CL[newIndex]);
+                CL.erase(CL.begin() + newIndex);
+                break;
+            }
         }
     }
+
+    cout << endl;
+    cout << endl;
 }
 
-set<int> nosRestantes(vector<int> &subtour, int dimension)
+vector<int> iniciaCL(int dimension)
 {
-    set<int> CL;
+    vector<int> CL;
 
-    for (int i = 1; i <= dimension; i++)
+    for (int i = 1; i < dimension; i++)
     {
-        if (find(subtour.begin(), subtour.end(), i) == subtour.end())
-        {
-            CL.insert(i);
-        }
+        CL.push_back(i);
     }
 
     return CL;
 }
 
-vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoUsados, Data &data)
+/*vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoUsados, Data &data)
 {
     vector<InsertionInfo> candidates(naoUsados.size() * (subtour.size() - 1));
     int l = 0;
@@ -53,39 +57,41 @@ vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoU
     }
 
     return candidates;
-}
+}*/
 
-void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no)
+/*void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no)
 {
     subtour.insert(subtour.begin() + no.arestaRemovida.second, no.noInserido);
-}
+}*/
 
-Solution construcao(Data &data)
+Solution construcao(Instance &instancia)
 {
-    int dimension = data.getDimension();
+    int dimension = instancia.size;
 
     Solution s;
+    s.routes.resize(instancia.totalVehicles);
 
-    s.sequencia.push_back(1);
-    escolher3NosAleatorios(s.sequencia, dimension);
-    s.sequencia.push_back(1);
+    vector<int> CL = iniciaCL(dimension);
 
-    set<int> CL = nosRestantes(s.sequencia, dimension);
+    preencherVazios(instancia, s.routes, CL);
 
-    while (!CL.empty())
+    INSERTION_CRITERIA criterion = (rand() % 2 == 0 ? CHEAPEST_INS : NEAREST_NEIGH);
+    INSERTION_STRATEGY strategy = (rand() % 2 == 0 ? SEQUENTIAL : PARALLEL);
+
+    /*while (!CL.empty())
     {
-        vector<InsertionInfo> custoInsercao = calcularCustoInsercao(s.sequencia, CL, data);
+        vector<InsertionInfo> custoInsercao = calcularCustoInsercao(s.routes, CL, instancia);
 
         sort(custoInsercao.begin(), custoInsercao.end());
         double alpha = (double)rand() / RAND_MAX;
         int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
 
-        inserirNaSolucao(s.sequencia, custoInsercao[selecionado]);
+        inserirNaSolucao(s.routes, custoInsercao[selecionado]);
 
-        CL.erase(custoInsercao[selecionado].noInserido);
+        CL.erase(CL.begin() + custoInsercao[selecionado].noInserido);
     }
 
-    calcularValorObj(s, data);
+    calcularValorObj(s, data);*/
 
     return s;
 }

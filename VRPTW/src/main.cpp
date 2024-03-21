@@ -86,6 +86,7 @@ void executaVRPTW(Instance &instance, vector<Cliente> &clientes, Veiculo &veicul
 
     int size = clientes.size();
 
+    instance.size = size;
     instance.nodes.resize(size);
     instance.dists.resize(size);
 
@@ -118,7 +119,7 @@ void executaVRPTW(Instance &instance, vector<Cliente> &clientes, Veiculo &veicul
         }
     }
 
-    s = ILS(50, 100, instance);
+    s = ILS(1, 1, instance);
 
     exibirSolucao(s);
 }
@@ -139,7 +140,7 @@ int main()
     executaVRPTW(instance, clientes, veiculo);
 
     // Imprimir os dados lidos
-    imprimirDados(veiculo, clientes);
+    // imprimirDados(veiculo, clientes);
 
     return 0;
 }

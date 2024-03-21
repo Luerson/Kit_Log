@@ -2,14 +2,15 @@
 
 Solution ILS(int maxIter, int maxIterILS, Instance &instance)
 {
+    srand(time(NULL));
     Solution bestOfAll;
     bestOfAll.valorObj = INFINITY;
 
-    /*for (int i = 0; i < maxIter; i++)
+    for (int i = 0; i < maxIter; i++)
     {
-        // Solution s = construcao(data);
+        Solution s = construcao(instance);
 
-        // Solution best = s;
+        Solution best = s;
 
         int iterILS = 0;
 
@@ -30,7 +31,7 @@ Solution ILS(int maxIter, int maxIterILS, Instance &instance)
         {
             bestOfAll = best;
         }
-    }*/
+    }
 
     return bestOfAll;
 }

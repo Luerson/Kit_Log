@@ -2,17 +2,17 @@
 #define SOLUCAO_H
 
 #include <bits/stdc++.h>
-#include "../src/Data.h"
+#include "instance.h"
 
 using namespace std;
 
 typedef struct
 {
-    vector<int> sequencia;
+    vector<vector<int>> routes;
     double valorObj;
 } Solution;
 
 void exibirSolucao(Solution &);
-void calcularValorObj(Solution &, Data &);
+// void calcularValorObj(Solution &, Instance &);
 
 #endif
