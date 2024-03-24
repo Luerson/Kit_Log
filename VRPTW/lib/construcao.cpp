@@ -10,6 +10,7 @@ bool feasible(Node &node, Instance &instance, Solution &s, pair<int, int> edge, 
     double newDistLeft = instance.dists[s.routes[route][edge.first]][node_index];
     double newDistRight = instance.dists[node_index][s.routes[route][edge.second]];
     double previousDist = instance.dists[s.routes[route][edge.first]][s.routes[route][edge.second]];
+    previousDist = (s.routes[route].size() < 3 ? 0 : previousDist);
     double delta = newDistLeft + newDistRight + node.serviceTime - previousDist;
 
     if (delta > s.ads.maxIncreaseTime[route][edge.second])

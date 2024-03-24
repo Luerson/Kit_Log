@@ -2,12 +2,12 @@
 
 Solution ILS(int maxIter, int maxIterILS, Instance &instance)
 {
-    srand(time(NULL));
     Solution bestOfAll;
     bestOfAll.valorObj = INFINITY;
 
     for (int i = 0; i < maxIter; i++)
     {
+        srand(time(NULL));
         Solution s = construcao(instance);
 
         Solution best = s;
