@@ -14,7 +14,7 @@ Solution ILS(int maxIter, int maxIterILS, Instance &instance)
 
         int iterILS = 0;
 
-        while (iterILS <= maxIterILS)
+        /*while (iterILS <= maxIterILS)
         {
             // buscaLocal(s, data);
             if (s.valorObj < best.valorObj)
@@ -25,7 +25,7 @@ Solution ILS(int maxIter, int maxIterILS, Instance &instance)
 
             // s = perturbacao(best, data);
             iterILS++;
-        }
+        }*/
 
         if (best.valorObj < bestOfAll.valorObj)
         {

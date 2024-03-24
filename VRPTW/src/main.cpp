@@ -139,7 +139,7 @@ int main()
     vector<Cliente> clientes;
 
     // Nome do arquivo de entrada
-    string nome_arquivo = "../instances/rc208.txt";
+    string nome_arquivo = "../instances/rc107.txt";
 
     // Ler os dados do arquivo
     lerDadosArquivo(nome_arquivo, veiculo, clientes);

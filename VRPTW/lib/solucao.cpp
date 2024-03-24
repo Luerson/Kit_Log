@@ -39,7 +39,14 @@ void fillTimeArrive(Solution &s, Instance &instance, ADS &ads, int i)
         // cout << "j = " << j << endl;
     }
 
-    ads.arriveTime[i].back() = cur_time;
+    if (s.routes[i].size() < 3)
+    {
+        ads.arriveTime[i].back() = 0;
+    }
+    else
+    {
+        ads.arriveTime[i].back() = cur_time;
+    }
 }
 
 void fillTotalLoad(Solution &s, Instance &instance, ADS &ads, int i)
@@ -84,11 +91,12 @@ void exibirSolucao(Solution &s)
         }
         cout << s.routes[i].back() << endl;
 
-        /*for (int j = 0; j < s.routes[i].size() - 1; j++)
+        for (int j = 0; j < s.routes[i].size() - 1; j++)
         {
             cout << s.ads.arriveTime[i][j] << " -> ";
         }
-        cout << s.ads.arriveTime[i].back() << endl;*/
+        cout << s.ads.arriveTime[i].back() << endl;
+        cout << endl;
     }
 
     cout << s.valorObj << endl;
@@ -99,6 +107,10 @@ void calcularValorObj(Solution &s, Instance &instance)
     s.valorObj = 0;
     for (int i = 0; i < s.routes.size(); i++)
     {
+        if (s.routes[i].size() < 3)
+        {
+            continue;
+        }
         double curr_route = 0;
         for (int j = 0; j < s.routes[i].size() - 1; j++)
         {

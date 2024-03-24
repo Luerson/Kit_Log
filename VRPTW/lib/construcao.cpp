@@ -7,7 +7,12 @@ bool feasible(Node &node, Instance &instance, Solution &s, pair<int, int> edge, 
         return false;
     }
 
-    if (node.serviceTime > s.ads.maxIncreaseTime[route][edge.second])
+    double newDistLeft = instance.dists[s.routes[route][edge.first]][node_index];
+    double newDistRight = instance.dists[node_index][s.routes[route][edge.second]];
+    double previousDist = instance.dists[s.routes[route][edge.first]][s.routes[route][edge.second]];
+    double delta = newDistLeft + newDistRight + node.serviceTime - previousDist;
+
+    if (delta > s.ads.maxIncreaseTime[route][edge.second])
     {
         return false;
     }
@@ -37,7 +42,7 @@ void preencherVazios(Instance &instancia, Solution &s, vector<int> &CL)
         fillTotalLoad(s, instancia, s.ads, i);
         fillTimeChange(s, instancia, s.ads, i);
 
-        while (1)
+        /*while (1)
         {
             int newIndex = rand() % CL.size();
 
@@ -53,7 +58,7 @@ void preencherVazios(Instance &instancia, Solution &s, vector<int> &CL)
                 fillTimeChange(s, instancia, s.ads, i);
                 break;
             }
-        }
+        }*/
     }
 }
 
@@ -97,7 +102,7 @@ int menorCusto(vector<int> &CL, Solution &s, int route, double gama, InsertionIn
                 custo_Atual -= gama * (instance.dists[0][vertice] + instance.dists[vertice][0]);
             }
 
-            if (feasible(node, instance, s, make_pair(j, j + 1), route, vertice) && custo_Atual < menorValor)
+            if (custo_Atual < menorValor && feasible(node, instance, s, make_pair(j, j + 1), route, vertice))
             {
                 newInfo.arestaRemovida = make_pair(j, j + 1);
                 newInfo.correspond_rout = route;
@@ -141,8 +146,14 @@ bool estrategiaSequencial(Solution &s, Instance &instance, vector<int> &CL, INSE
     while (!CL.empty())
     {
         bool oneInserted = false;
-        for (int i = 0; i < s.routes.size() && !CL.empty(); i++)
+        for (int i = 0; i < s.routes.size(); i++)
         {
+            if (CL.empty())
+            {
+                oneInserted = true;
+                break;
+            }
+
             InsertionInfo custoInsercao;
             int menorIndice = menorCusto(CL, s, i, gama, custoInsercao, instance);
 
@@ -177,13 +188,14 @@ bool estrategiaParalela(Solution &s, Instance &instance, vector<int> &CL, INSERT
     while (!CL.empty())
     {
         InsertionInfo custoInsercao;
-        int menorIndex;
+        int menorIndex = -1;
 
         custoInsercao.custo = INFINITE;
 
         for (int i = 0; i < s.routes.size(); i++)
         {
             InsertionInfo cur_custoInsercao;
+            cur_custoInsercao.custo = INFINITE;
             int curr_menor_index = menorCusto(CL, s, i, gama, cur_custoInsercao, instance);
 
             if (cur_custoInsercao.custo < custoInsercao.custo)
