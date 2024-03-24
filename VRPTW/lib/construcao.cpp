@@ -1,27 +1,60 @@
 #include "construcao.h"
 
-void preencherVazios(Instance &instancia, vector<vector<int>> &routes, vector<int> &CL)
+bool feasible(Node &node, Instance &instance, Solution &s, pair<int, int> edge, int route, int node_index)
+{
+    if (s.ads.total_load[route] + node.demand > instance.capacity)
+    {
+        return false;
+    }
+
+    if (node.serviceTime > s.ads.maxIncreaseTime[route][edge.second])
+    {
+        return false;
+    }
+
+    double last_node_arrive = s.ads.arriveTime[route][edge.first];
+    double last_node_service = instance.nodes[s.routes[route][edge.first]].serviceTime;
+    double time_travel = instance.dists[s.routes[route][edge.first]][node_index];
+
+    if (last_node_arrive + last_node_service + time_travel < node.window.first || last_node_arrive + last_node_service + time_travel > node.window.second)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void preencherVazios(Instance &instancia, Solution &s, vector<int> &CL)
 {
     int size = instancia.totalVehicles;
 
     for (int i = 0; i < size; i++)
     {
+        s.routes[i].push_back(0);
+        s.routes[i].push_back(0);
+
+        fillTimeArrive(s, instancia, s.ads, i);
+        fillTotalLoad(s, instancia, s.ads, i);
+        fillTimeChange(s, instancia, s.ads, i);
+
         while (1)
         {
             int newIndex = rand() % CL.size();
 
-            if (instancia.nodes[CL[newIndex]].demand <= instancia.capacity)
+            int t_arrive = instancia.dists[0][CL[newIndex]];
+            Node node = instancia.nodes[CL[newIndex]];
+
+            if (feasible(node, instancia, s, make_pair(0, 1), i, CL[newIndex]))
             {
-                cout << CL[newIndex] << endl;
-                routes[i].push_back(CL[newIndex]);
+                s.routes[i].insert(s.routes[i].begin() + 1, CL[newIndex]);
                 CL.erase(CL.begin() + newIndex);
+                fillTimeArrive(s, instancia, s.ads, i);
+                fillTotalLoad(s, instancia, s.ads, i);
+                fillTimeChange(s, instancia, s.ads, i);
                 break;
             }
         }
     }
-
-    cout << endl;
-    cout << endl;
 }
 
 vector<int> iniciaCL(int dimension)
@@ -36,62 +69,175 @@ vector<int> iniciaCL(int dimension)
     return CL;
 }
 
-/*vector<InsertionInfo> calcularCustoInsercao(vector<int> &subtour, set<int> &naoUsados, Data &data)
+int menorCusto(vector<int> &CL, Solution &s, int route, double gama, InsertionInfo &custoInsercao, Instance &instance)
 {
-    vector<InsertionInfo> candidates(naoUsados.size() * (subtour.size() - 1));
-    int l = 0;
+    int menorIndice = -1;
+    double menorValor = INFINITE;
 
-    for (auto vertice : naoUsados)
+    for (int i = 0; i < CL.size(); i++)
     {
-        for (int j = 0; j < subtour.size() - 1; j++)
+        int vertice = CL[i];
+
+        for (int j = 0; j < s.routes[route].size() - 1; j++)
         {
-            InsertionInfo candidate;
+            double custo_Atual;
+            Node node = instance.nodes[vertice];
+            InsertionInfo newInfo;
 
-            candidate.noInserido = vertice;
-            candidate.arestaRemovida = make_pair(j, j + 1);
-            candidate.custo = data.getDistance(subtour[j], vertice) + data.getDistance(vertice, subtour[j + 1]) - data.getDistance(subtour[j], subtour[j + 1]);
+            int cur_node = s.routes[route][j];
+            int next_node = s.routes[route][j + 1];
 
-            candidates[l] = candidate;
-            l++;
+            if (gama < 0)
+            {
+                custo_Atual = instance.dists[cur_node][vertice];
+            }
+            else
+            {
+                custo_Atual = (instance.dists[cur_node][vertice] + instance.dists[vertice][next_node] - instance.dists[cur_node][next_node]);
+                custo_Atual -= gama * (instance.dists[0][vertice] + instance.dists[vertice][0]);
+            }
+
+            if (feasible(node, instance, s, make_pair(j, j + 1), route, vertice) && custo_Atual < menorValor)
+            {
+                newInfo.arestaRemovida = make_pair(j, j + 1);
+                newInfo.correspond_rout = route;
+                newInfo.custo = custo_Atual;
+                newInfo.noInserido = vertice;
+
+                menorIndice = i;
+                menorValor = custo_Atual;
+
+                custoInsercao = newInfo;
+            }
         }
     }
 
-    return candidates;
-}*/
+    return menorIndice;
+}
 
-/*void inserirNaSolucao(vector<int> &subtour, InsertionInfo &no)
+void inserirNaSolucao(Solution &s, InsertionInfo &insertion, Instance &instance)
 {
-    subtour.insert(subtour.begin() + no.arestaRemovida.second, no.noInserido);
-}*/
+    int node_number = insertion.noInserido;
+    int insert_index = insertion.arestaRemovida.second;
+    int route = insertion.correspond_rout;
+
+    s.routes[route].insert(s.routes[route].begin() + insert_index, node_number);
+
+    fillTimeArrive(s, instance, s.ads, route);
+    fillTotalLoad(s, instance, s.ads, route);
+    fillTimeChange(s, instance, s.ads, route);
+}
+
+bool estrategiaSequencial(Solution &s, Instance &instance, vector<int> &CL, INSERTION_CRITERIA criteria)
+{
+    double gama = -1;
+    vector<vector<InsertionInfo>> candidates;
+
+    if (criteria == CHEAPEST_INS)
+    {
+        gama = (rand() % 35) * 0.05;
+    }
+
+    while (!CL.empty())
+    {
+        bool oneInserted = false;
+        for (int i = 0; i < s.routes.size() && !CL.empty(); i++)
+        {
+            InsertionInfo custoInsercao;
+            int menorIndice = menorCusto(CL, s, i, gama, custoInsercao, instance);
+
+            if (menorIndice < 0)
+            {
+                continue;
+            }
+
+            oneInserted = true;
+            inserirNaSolucao(s, custoInsercao, instance);
+            CL.erase(CL.begin() + menorIndice);
+        }
+
+        if (!oneInserted)
+            return false;
+        oneInserted = false;
+    }
+
+    return true;
+}
+
+bool estrategiaParalela(Solution &s, Instance &instance, vector<int> &CL, INSERTION_CRITERIA criteria)
+{
+    double gama = -1;
+    vector<vector<InsertionInfo>> candidates;
+
+    if (criteria == CHEAPEST_INS)
+    {
+        gama = (rand() % 35) * 0.05;
+    }
+
+    while (!CL.empty())
+    {
+        InsertionInfo custoInsercao;
+        int menorIndex;
+
+        custoInsercao.custo = INFINITE;
+
+        for (int i = 0; i < s.routes.size(); i++)
+        {
+            InsertionInfo cur_custoInsercao;
+            int curr_menor_index = menorCusto(CL, s, i, gama, cur_custoInsercao, instance);
+
+            if (cur_custoInsercao.custo < custoInsercao.custo)
+            {
+                custoInsercao = cur_custoInsercao;
+                menorIndex = curr_menor_index;
+            }
+        }
+
+        if (menorIndex < 0)
+        {
+            return false;
+        }
+
+        inserirNaSolucao(s, custoInsercao, instance);
+        CL.erase(CL.begin() + menorIndex);
+    }
+
+    return true;
+}
 
 Solution construcao(Instance &instancia)
 {
     int dimension = instancia.size;
 
-    Solution s;
-    s.routes.resize(instancia.totalVehicles);
+    int k = 0;
 
-    vector<int> CL = iniciaCL(dimension);
-
-    preencherVazios(instancia, s.routes, CL);
-
-    INSERTION_CRITERIA criterion = (rand() % 2 == 0 ? CHEAPEST_INS : NEAREST_NEIGH);
-    INSERTION_STRATEGY strategy = (rand() % 2 == 0 ? SEQUENTIAL : PARALLEL);
-
-    /*while (!CL.empty())
+    while (1)
     {
-        vector<InsertionInfo> custoInsercao = calcularCustoInsercao(s.routes, CL, instancia);
+        k++;
+        Solution s;
+        startADS(s.ads, dimension, instancia.totalVehicles);
+        s.routes.resize(instancia.totalVehicles);
 
-        sort(custoInsercao.begin(), custoInsercao.end());
-        double alpha = (double)rand() / RAND_MAX;
-        int selecionado = rand() % max(((int)ceil(alpha * custoInsercao.size())), 1);
+        vector<int> CL = iniciaCL(dimension);
 
-        inserirNaSolucao(s.routes, custoInsercao[selecionado]);
+        preencherVazios(instancia, s, CL);
 
-        CL.erase(CL.begin() + custoInsercao[selecionado].noInserido);
+        INSERTION_CRITERIA criterion = (rand() % 2 == 0 ? CHEAPEST_INS : NEAREST_NEIGH);
+        INSERTION_STRATEGY strategy = (rand() % 2 == 0 ? SEQUENTIAL : PARALLEL);
+
+        if (strategy == SEQUENTIAL)
+        {
+            s.feasible = estrategiaSequencial(s, instancia, CL, criterion);
+        }
+        else if (strategy == PARALLEL)
+        {
+            s.feasible = estrategiaParalela(s, instancia, CL, criterion);
+        }
+
+        if (s.feasible)
+        {
+            calcularValorObj(s, instancia);
+            return s;
+        }
     }
-
-    calcularValorObj(s, data);*/
-
-    return s;
 }

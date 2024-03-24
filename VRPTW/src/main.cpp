@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include "implements.h"
+#include <chrono>
 
 using namespace std;
 
@@ -119,9 +120,17 @@ void executaVRPTW(Instance &instance, vector<Cliente> &clientes, Veiculo &veicul
         }
     }
 
-    s = ILS(1, 1, instance);
+    auto start = chrono::high_resolution_clock::now();
+
+    s = ILS(50, 1, instance);
+
+    auto stop = chrono::high_resolution_clock::now();
+
+    auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
 
     exibirSolucao(s);
+
+    cout << "Tempo de execucaoo: " << duration.count() << " milissegundos" << endl;
 }
 
 int main()
@@ -130,7 +139,7 @@ int main()
     vector<Cliente> clientes;
 
     // Nome do arquivo de entrada
-    string nome_arquivo = "../instances/c101.txt";
+    string nome_arquivo = "../instances/rc208.txt";
 
     // Ler os dados do arquivo
     lerDadosArquivo(nome_arquivo, veiculo, clientes);

@@ -33,5 +33,6 @@ Solution ILS(int maxIter, int maxIterILS, Instance &instance)
         }
     }
 
+    // exibirSolucao(bestOfAll);
     return bestOfAll;
 }

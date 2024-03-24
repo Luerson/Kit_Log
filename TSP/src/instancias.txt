@@ -1,15 +1,18 @@
+../instances/burma14.tsp 0.004 3323
+../instances/gr17.tsp 0.008 2085
+../instances/bayg29.tsp 0.043 1610
+../instances/bays29.tsp 0.05 2020
+../instances/kroA100.tsp 3.468 21282
+../instances/rd100.tsp 3.983 7910
+../instances/bier127.tsp 10.209 118282
+../instances/ch130.tsp 10.91 6110
 ../instances/a280.tsp 96.623 2579
 ../instances/ali535.tsp 1525 202384
 ../instances/att48.tsp 0.3 10628
 ../instances/att532.tsp 1778.96 27731
-../instances/bayg29.tsp 0.043 1610
-../instances/bays29.tsp 0.05 2020
 ../instances/berlin52.tsp 0.374 7542
-../instances/bier127.tsp 10.209 118282
 ../instances/brazil58.tsp 0.479 25395
 ../instances/brg180.tsp 12.824 1950
-../instances/burma14.tsp 0.004 3323
-../instances/ch130.tsp 10.91 6110
 ../instances/ch150.tsp 10.43 6528
 ../instances/d198.tsp 33.639 15780
 ../instances/d493.tsp 1132.48 35042
@@ -22,7 +25,6 @@
 ../instances/gil262.tsp 82.271 2378.7
 ../instances/gr120.tsp 9.065 6942
 ../instances/gr137.tsp 11.348 69853
-../instances/gr17.tsp 0.008 2085
 ../instances/gr202.tsp 37.105 40160.1
 ../instances/gr21.tsp 0.014 2707
 ../instances/gr229.tsp 61.498 134613
@@ -31,7 +33,6 @@
 ../instances/gr48.tsp 0.314 5046
 ../instances/gr96.tsp 3.475 55209
 ../instances/hk48.tsp 0.336 11461
-../instances/kroA100.tsp 3.468 21282
 ../instances/kroA150.tsp 11.751 26524
 ../instances/kroA200.tsp 32.951 29368
 ../instances/kroB100.tsp 3.748 22141
@@ -55,7 +56,6 @@
 ../instances/pr76.tsp 1.366 108159
 ../instances/rat195.tsp 28.046 2326.1
 ../instances/rat99.tsp 4.115 1211
-../instances/rd100.tsp 3.983 7910
 ../instances/rd400.tsp 498.288 15296.1
 ../instances/si175.tsp 17.333 21407
 ../instances/si535.tsp 758.534 48466.8

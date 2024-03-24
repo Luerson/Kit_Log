@@ -10,6 +10,7 @@ using namespace std;
 struct InsertionInfo
 {
     int noInserido;
+    int correspond_rout;
     pair<int, int> arestaRemovida;
     double custo;
 
@@ -31,12 +32,16 @@ enum INSERTION_STRATEGY
     PARALLEL
 };
 
-// void escolher3NosAleatorios(vector<int> &, int);
-// set<int> nosRestantes(vector<int> &, int);
-// void inserirNaSolucao(vector<int> &, InsertionInfo &);
-// vector<InsertionInfo> calcularCustoInsercao(vector<int> &, set<int> &, Data &);
+bool feasible(Node &, Instance &, Solution &, pair<int, int>, int);
 void preencherVazios(Instance &, vector<vector<int>> &, vector<int> &);
 vector<int> iniciaCL(int);
+
+int menorCusto(vector<int> &, Solution &, int, double, InsertionInfo &, Instance &);
+void inserirNaSolucao(Solution &, InsertionInfo &, Instance &);
+
+bool estrategiaSequencial(Solution &, Instance &, vector<int> &, INSERTION_CRITERIA);
+bool estrategiaParalela(Solution &, Instance &, vector<int> &, INSERTION_CRITERIA);
+
 Solution construcao(Instance &);
 
 #endif
